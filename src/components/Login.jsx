@@ -7,6 +7,8 @@ export default function Login({ onLoginSuccess }) {
   const [isRegistering, setIsRegistering] = useState(false)
   const [loading, setLoading] = useState(false)
   const [erro, setErro] = useState('')
+  
+  const [mostrarBeneficios, setMostrarBeneficios] = useState(false)
 
   const handleAuth = async (e) => {
     e.preventDefault()
@@ -17,7 +19,8 @@ export default function Login({ onLoginSuccess }) {
       if (isRegistering) {
         const { data, error } = await supabase.auth.signUp({ email, password })
         if (error) throw error
-        alert('Cadastro realizado! Verifique seu e-mail ou faça login.')
+        alert('Cadastro realizado! Se o email confirmation estiver desativado no Supabase, você já pode fazer login.')
+        setIsRegistering(false)
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
@@ -26,6 +29,8 @@ export default function Login({ onLoginSuccess }) {
     } catch (err) {
       if (err.message.includes('Invalid login credentials')) {
         setErro('E-mail ou senha incorretos.')
+      } else if (err.message.includes('User already registered')) {
+         setErro('Este e-mail já está cadastrado.')
       } else {
         setErro(err.message)
       }
@@ -34,41 +39,65 @@ export default function Login({ onLoginSuccess }) {
     }
   }
 
+  if (mostrarBeneficios) {
+    return (
+      <div className="min-h-screen bg-vaga-dark flex items-center justify-center p-4 font-sans text-white">
+        <div className="bg-vaga-card border border-zinc-800 w-full max-w-lg rounded-2xl p-8 shadow-2xl">
+          
+          <div className="flex flex-col items-center mb-6">
+            <h2 className="text-3xl font-extrabold tracking-tight text-center">
+              O Impacto do <span className="text-vaga-green">VagaLink</span>
+            </h2>
+            <p className="text-zinc-400 text-sm mt-2 text-center">
+              Veja como nossa tecnologia está transformando o campus.
+            </p>
+          </div>
+          
+          <div className="space-y-4 mb-8">
+            <div className="bg-zinc-900 p-4 rounded-xl border border-zinc-800 hover:border-vaga-green transition-colors">
+              <h3 className="font-bold text-lg text-white mb-1">🌱 Redução de Emissão de CO²</h3>
+              <p className="text-sm text-zinc-400">
+                Ao guiar os motoristas direto para as vagas livres, reduzimos drasticamente o tempo de veículos circulando à toa, diminuindo a poluição no campus.
+              </p>
+            </div>
+            
+            <div className="bg-zinc-900 p-4 rounded-xl border border-zinc-800 hover:border-vaga-green transition-colors">
+              <h3 className="font-bold text-lg text-white mb-1">⏱️ Otimização de Tempo</h3>
+              <p className="text-sm text-zinc-400">
+                Chega de atrasos nas aulas! Estudantes e professores economizam preciosos minutos sabendo exatamente onde estacionar.
+              </p>
+            </div>
+
+            <div className="bg-zinc-900 p-4 rounded-xl border border-zinc-800 hover:border-vaga-green transition-colors">
+              <h3 className="font-bold text-lg text-white mb-1">🧘 Menos Estresse e Filas</h3>
+              <p className="text-sm text-zinc-400">
+                Melhora na fluidez do trânsito interno, evitando congestionamentos na entrada e proporcionando uma experiência muito mais tranquila.
+              </p>
+            </div>
+          </div>
+
+          <button 
+            onClick={() => setMostrarBeneficios(false)}
+            className="w-full bg-transparent border border-vaga-green text-vaga-green font-bold py-3 rounded-lg hover:bg-vaga-green hover:text-vaga-dark transition-all cursor-pointer"
+          >
+            Voltar para o Login
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-vaga-dark flex items-center justify-center p-4 font-sans">
       
-      {/* Card do formulário */}
       <div className="bg-vaga-card border border-zinc-800 w-full max-w-sm rounded-2xl p-8 shadow-2xl text-center">
         
-        {/* === LOGO EM VETOR (SVG) E NOME DO APP === */}
-        <div className="flex flex-col items-center justify-center mb-2">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="1.5" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            className="w-16 h-16 text-vaga-green mb-2"
-          >
-            {/* Desenho do Carro */}
-            <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 12 10s-6.7.6-8.5 1.1C2.7 11.3 2 12.1 2 13v3c0 .6.4 1 1 1h2"/>
-            <circle cx="7" cy="17" r="2"/>
-            <path d="M9 17h6"/>
-            <circle cx="17" cy="17" r="2"/>
-            <path d="M14 10V8c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v2"/>
-            <path d="M8 2c2.4-1.2 5.6-1.2 8 0" />
-            <path d="M10 5c1.2-.6 2.8-.6 4 0" />
-          </svg>
-
-          {/* Tipografia Moderna */}
-          <h2 className="text-4xl font-extrabold tracking-tight">
+        <div className="flex flex-col items-center justify-center mb-6 mt-2">
+          <h2 className="text-5xl font-extrabold tracking-tight">
             <span className="text-vaga-green">Vaga</span>
             <span className="text-white">Link</span>
           </h2>
         </div>
-        {/* ======================================== */}
 
         <p className="text-zinc-400 text-sm mb-6">
           {isRegistering ? 'Crie sua conta na plataforma' : 'Acesse o sistema de vagas'}
@@ -110,14 +139,17 @@ export default function Login({ onLoginSuccess }) {
 
         <button
           type="button"
-          onClick={() => onLoginSuccess({ email: 'aluno@teste.com' })}
+          onClick={() => setMostrarBeneficios(true)}
           className="mt-4 w-full bg-transparent border border-dashed border-vaga-green text-vaga-green font-bold py-2 rounded-lg hover:bg-vaga-green/10 transition-colors cursor-pointer"
         >
-          Entrar sem Login (Modo Teste)
+          🌟 Conheça nossos benefícios
         </button>
 
         <button
-          onClick={() => setIsRegistering(!isRegistering)}
+          onClick={() => {
+            setIsRegistering(!isRegistering)
+            setErro('') 
+          }}
           className="mt-6 text-sm text-zinc-400 hover:text-vaga-green transition-colors cursor-pointer"
         >
           {isRegistering
