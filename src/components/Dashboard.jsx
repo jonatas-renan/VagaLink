@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Polygon, Popup, ZoomControl } from 'react-leaf
 import 'leaflet/dist/leaflet.css'
 import { todasAsVagas } from '../vagasData'
 import { supabase } from '../supabaseClient' 
+import { Link } from 'react-router-dom'
 
 const SENSOR_VAGA_MAP = {
   1: 'curva_1794014365239_12', // Setor A
@@ -81,11 +82,10 @@ export default function Dashboard({ user, role, onLogout }) {
         </div>
         
         <div className="flex items-center gap-4">
-           {/* APARECE SÓ SE FOR ADMIN */}
            {role === 'admin' && (
-             <button className="px-3 py-1.5 bg-vaga-green text-vaga-dark font-bold text-xs rounded-lg hover:brightness-110 transition-all">
+             <Link to="/admin" className="px-3 py-1.5 bg-vaga-green text-vaga-dark font-bold text-xs rounded-lg hover:brightness-110 transition-all">
                Painel Admin
-             </button>
+             </Link>
            )}
            
            <span className="hidden md:inline-block text-xs font-semibold text-zinc-500">
