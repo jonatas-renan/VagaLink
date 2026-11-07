@@ -13,7 +13,7 @@ const SENSOR_VAGA_MAP = {
 
 const DISTANCIA_OCUPADO_CM = 150 
 
-export default function Dashboard({ user, onLogout }) {
+export default function Dashboard({ user, role, onLogout }) {
   const facensCenter = [-23.4701261, -47.4297037]
   const limitesMapa = [
     [-23.475000, -47.435000],
@@ -24,16 +24,11 @@ export default function Dashboard({ user, onLogout }) {
 
   useEffect(() => {
     const fetchSensores = async () => {
-      console.log("⏱️ Buscando dados...", new Date().toLocaleTimeString())
-
       const { data, error } = await supabase
         .from('sensores')
         .select('sensor_id, distancia_cm')
 
-      if (error) {
-        console.error("🚨 Erro Supabase:", error)
-        return
-      }
+      if (error) return
 
       if (data) {
         setVagas(vagasAtuais => 
@@ -84,8 +79,18 @@ export default function Dashboard({ user, onLogout }) {
            </svg>
            <h1 className="text-xl font-extrabold text-white">Vaga<span className="text-vaga-green">Link</span></h1>
         </div>
+        
         <div className="flex items-center gap-4">
-           <span className="hidden md:inline-block text-xs font-semibold text-zinc-500">{user?.email}</span>
+           {/* APARECE SÓ SE FOR ADMIN */}
+           {role === 'admin' && (
+             <button className="px-3 py-1.5 bg-vaga-green text-vaga-dark font-bold text-xs rounded-lg hover:brightness-110 transition-all">
+               Painel Admin
+             </button>
+           )}
+           
+           <span className="hidden md:inline-block text-xs font-semibold text-zinc-500">
+             {user?.email}
+           </span>
            <button onClick={onLogout} className="text-sm font-semibold text-zinc-400 hover:text-red-500 cursor-pointer transition-colors">Sair</button>
         </div>
       </header>
@@ -94,7 +99,7 @@ export default function Dashboard({ user, onLogout }) {
         <MapContainer 
           center={facensCenter} 
           zoom={17} 
-          minZoom={16} 
+          minZoom={17} 
           maxZoom={24} 
           maxBounds={limitesMapa}
           maxBoundsViscosity={1.0}
@@ -125,16 +130,14 @@ export default function Dashboard({ user, onLogout }) {
                 <div className="text-center font-sans p-1">
                   <h3 className="font-bold text-gray-800 text-sm mb-1">{vaga.nome}</h3>
                   
-                  {vaga.temSensor && (
-                    <p className="text-[10px] uppercase tracking-wider text-blue-600 font-bold mb-2">📡 Sensor {vaga.sensorId}</p>
-                  )}
-
                   <div className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${vaga.ocupada ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-700'}`}>
                     {vaga.ocupada ? 'Vaga Ocupada' : 'Vaga Disponível'}
                   </div>
 
                   {vaga.temSensor && (
-                    <p className="text-[10px] text-gray-500 mt-2 font-mono">Leitura Atual: {vaga.distanciaAtual} cm</p>
+                    <p className="text-[10px] text-gray-500 mt-2 font-mono">
+                      Sensor {vaga.sensorId} | {vaga.distanciaAtual} cm
+                    </p>
                   )}
                 </div>
               </Popup>
