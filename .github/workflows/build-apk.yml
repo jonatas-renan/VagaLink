@@ -28,11 +28,11 @@ jobs:
       - name: 🔄 Sincronizar o Capacitor
         run: npx cap sync android
 
-      - name: ☕ Configurar Java (JDK 17 - Zulu)
+      - name: ☕ Configurar Java (JDK 21 - Zulu)
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '21'
 
       - name: 🔓 Liberar permissão do Gradle
         run: chmod +x android/gradlew
