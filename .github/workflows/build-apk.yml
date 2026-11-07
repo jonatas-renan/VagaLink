@@ -14,10 +14,10 @@ jobs:
       - name: 📥 Clonar o repositório
         uses: actions/checkout@v4
 
-      - name: 🟢 Configurar Node.js
+      - name: 🟢 Configurar Node.js (Versão 24)
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: 📦 Instalar Dependências (NPM)
         run: npm install
@@ -28,7 +28,7 @@ jobs:
       - name: 🔄 Sincronizar o Capacitor
         run: npx cap sync android
 
-      - name: ☕ Configurar Java (JDK 17)
+      - name: ☕ Configurar Java (JDK 17 - Zulu)
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
