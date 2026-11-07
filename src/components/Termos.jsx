@@ -4,10 +4,8 @@ export default function Termos() {
   return (
     <div className="min-h-[100dvh] bg-vaga-dark flex flex-col items-center p-6 md:p-8 font-sans text-white">
       
-      {/* Container limitador para não esticar infinitamente em telas gigantes */}
       <div className="w-full max-w-4xl flex flex-col h-full flex-1">
         
-        {/* Cabeçalho */}
         <div className="flex-none mb-6">
           <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
             <span className="text-vaga-green">Termos </span>
@@ -18,7 +16,6 @@ export default function Termos() {
           </p>
         </div>
         
-        {/* Conteúdo */}
         <div className="flex-1 overflow-y-auto pr-2 space-y-5 text-base text-zinc-300 leading-relaxed custom-scrollbar">
           <div>
             <strong className="text-white text-lg block mb-1">1. Aceitação dos Termos</strong>
@@ -41,7 +38,6 @@ export default function Termos() {
           </div>
         </div>
 
-        {/* Rodapé com o botão */}
         <div className="flex-none mt-6 pt-4 border-t border-zinc-800">
           <Link 
             to="/login"
