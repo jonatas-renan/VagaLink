@@ -22,6 +22,11 @@ jobs:
       - name: 📦 Instalar Dependências (NPM)
         run: npm install
 
+      - name: 🔐 Injetar Variáveis de Ambiente
+        run: |
+          echo "VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}" >> .env
+          echo "VITE_SUPABASE_ANON_KEY=${{ secrets.VITE_SUPABASE_ANON_KEY }}" >> .env
+
       - name: 🏗️ Fazer o Build do React
         run: npm run build
 
