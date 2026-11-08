@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard'
 import Login from './components/Login'
 import Beneficios from './components/Beneficios'
 import Termos from './components/Termos'
+import PainelKPIs from './components/PainelKPIs'
 
 export default function App() {
   const [user, setUser] = useState(null)
@@ -64,7 +65,7 @@ export default function App() {
         {/* Rota Admin */}
         <Route 
           path="/admin" 
-          element={user && role === 'admin' ? <div>Tela Admin (Em breve)</div> : <Navigate to="/" />} 
+          element={user && role === 'admin' ? <PainelKPIs user={user} /> : <Navigate to="/" />} 
         />
       </Routes>
     </Router>
