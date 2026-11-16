@@ -12,7 +12,7 @@ const SENSOR_VAGA_MAP = {
   4: 'curva_1794015602042_4',  // Setor Q
 }
 
-const DISTANCIA_OCUPADO_CM = 150 
+const DISTANCIA_OCUPADO_CM = 15 
 
 export default function Dashboard({ user, role, onLogout }) {
   const facensCenter = [-23.4701261, -47.4297037]
