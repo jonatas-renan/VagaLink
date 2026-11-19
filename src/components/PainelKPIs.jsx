@@ -5,7 +5,7 @@ import { todasAsVagas } from '../vagasData'
 
 // ── Configuração ─────────────────────────────────────────────────────────
 // Mantenha DISTANCIA_OCUPADO_CM e SENSORES iguais aos de Dashboard.jsx.
-const DISTANCIA_OCUPADO_CM = 150
+const DISTANCIA_OCUPADO_CM = 15
 const SENSORES = [
   { id: 1, setor: 'Setor A', vagaId: 'curva_1794014365239_12' },
   { id: 2, setor: 'Setor E', vagaId: 'curva_1794014751825_6' },
