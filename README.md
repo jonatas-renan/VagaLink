@@ -309,7 +309,3 @@ O APK fica na aba **Actions**, dentro da execução, como artefato **VagaLink-AP
 - O firmware usa `client.setInsecure()` (não valida o certificado). Em produção, valide o certificado do servidor.
 - O mapeamento sensor → vaga é manual, no código.
 - O APK gerado é de debug.
-
-## Equipe
-
-Projeto UPX, Facens. Integrantes: _(adicione os nomes)_
